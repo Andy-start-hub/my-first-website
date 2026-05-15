@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>AndyZ · 知行录</title>
+  <style>
+    /* ========= 全局设计系统 ========= */
+    :root {
+      /* 主色调 */
+      --primary: #3b82f6;
+      --primary-light: #eef2ff;
+      --primary-dark: #1e40af;
+
+      /* 辅助色 */
+      --accent-orange: #f97316;
+      --accent-yellow: #f59e0b;
+      --accent-purple: #a855f7;
+
+      /* 中性色 */
+      --gray-50: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-300: #cbd5e1;
+      --gray-600: #475569;
+      --gray-700: #334155;
+      --gray-800: #1e293b;
+      --gray-900: #0f172a;
+
+      /* 间距系统 */
+      --spacing-xs: 0.25rem;
+      --spacing-sm: 0.5rem;
+      --spacing-md: 1rem;
+      --spacing-lg: 1.5rem;
+      --spacing-xl: 2rem;
+      --spacing-2xl: 3rem;
+
+      /* 圆角系统 */
+      --radius-sm: 0.5rem;
+      --radius-md: 1rem;
+      --radius-lg: 1.5rem;
+      --radius-xl: 2rem;
+
+      /* 阴影系统 */
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.03);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08), 0 20px 35px -12px rgba(0, 0, 0, 0.12);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--gray-50);
+      font-family: system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Noto Sans', sans-serif;
+      line-height: 1.5;
+      color: var(--gray-900);
+      scroll-behavior: smooth;
+    }
+
+    /* 主容器 */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--spacing-xl) var(--spacing-lg) var(--spacing-2xl);
+    }
+
+    /* ========= 自我介绍区 ========= */
+    .intro {
+      background: linear-gradient(145deg, #ffffff 0%, #fef9f0 100%);
+      border-radius: var(--radius-xl);
+      padding: var(--spacing-xl);
+      margin-bottom: var(--spacing-2xl);
+      box-shadow: var(--shadow-md);
+      transition: all 0.2s ease;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+
+    .intro-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-xl);
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .avatar-area {
+      flex-shrink: 0;
+      text-align: center;
+    }
+
+    .avatar {
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(135deg, var(--primary), var(--accent-purple));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+      box-shadow: 0 15px 25px -8px rgba(59, 130, 246, 0.3);
+      transition: transform 0.25s ease;
+      margin-bottom: var(--spacing-sm);
+      animation: breathe 3s ease-in-out infinite;
+    }
+
+    .avatar:hover {
+      transform: scale(1.02);
+    }
+
+    .avatar span {
+      filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.1));
+    }
+
+    /* 通用徽章样式 */
+    .badge,
+    .skill-tag {
+      border-radius: 40px;
+      font-weight: 500;
+      display: inline-block;
+    }
+
+    .badge {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      padding: var(--spacing-xs) var(--spacing-md);
+      font-size: 0.8rem;
+    }
+
+    .intro-text {
+      flex: 1;
+    }
+
+    .intro-text h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      background: linear-gradient(to right, var(--gray-900), var(--primary));
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .intro-tagline {
+      font-size: 1.1rem;
+      color: var(--gray-700);
+      border-left: 4px solid var(--primary);
+      padding-left: var(--spacing-md);
+      margin: var(--spacing-md) 0 var(--spacing-lg) 0;
+      font-weight: 450;
+    }
+
+    .intro-desc {
+      color: var(--gray-800);
+      margin-bottom: var(--spacing-lg);
+      max-width: 550px;
+    }
+
+    .social-links {
+      display: flex;
+      gap: var(--spacing-md);
+      flex-wrap: wrap;
+    }
+
+    .social-links a {
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      background: var(--gray-100);
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-radius: 40px;
+      color: var(--primary-dark);
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 44px;
+      /* 优化移动端点击区域 */
+    }
+
+    .social-links a:hover {
+      background: var(--gray-200);
+      transform: translateY(-2px);
+    }
+
+    /* 通用板块样式 */
+    .section {
+      margin-bottom: 4.5rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: var(--spacing-xl);
+      border-bottom: 2px solid var(--gray-200);
+      padding-bottom: 0.6rem;
+    }
+
+    .section-title {
+      font-size: 1.9rem;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+
+    .section-title .emoji-badge {
+      font-size: 1.8rem;
+    }
+
+    .section-motto {
+      color: var(--gray-600);
+      font-size: 0.9rem;
+      font-weight: 400;
+    }
+
+    /* 卡片网格 */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.8rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 1.6rem;
+      transition: all 0.25s ease-in-out;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--primary-light);
+      backdrop-filter: blur(0px);
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--gray-300);
+    }
+
+    .card-icon {
+      font-size: 2.2rem;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .card h3 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+      color: var(--gray-900);
+    }
+
+    .card p {
+      color: var(--gray-700);
+      font-size: 0.95rem;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: var(--spacing-sm);
+    }
+
+    .skill-tag {
+      background: var(--gray-100);
+      color: var(--gray-800);
+      padding: 0.2rem 0.7rem;
+      font-size: 0.75rem;
+    }
+
+    .life-quote {
+      font-style: italic;
+      border-left: 3px solid var(--accent-yellow);
+      padding-left: 0.8rem;
+      margin-top: var(--spacing-md);
+      color: var(--gray-600);
+      font-size: 0.85rem;
+    }
+
+    /* 生活板块中特殊卡片样式微调 */
+    .life-card .card-icon {
+      color: var(--accent-orange);
+    }
+
+    hr {
+      margin: var(--spacing-md) 0;
+      border: none;
+      border-top: 1px solid var(--primary-light);
+    }
+
+    /* 小确幸区域 */
+    .little-happiness {
+      margin-top: 2rem;
+      background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-md) var(--spacing-lg);
+      border: 1px solid #fed7aa;
+      box-shadow: 0 2px 8px rgba(249, 115, 22, 0.05);
+    }
+
+    /* 回到顶部按钮 */
+    .back-to-top {
+      position: fixed;
+      bottom: var(--spacing-xl);
+      right: var(--spacing-xl);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-lg);
+      z-index: 1000;
+      min-width: 48px;
+      min-height: 48px;
+    }
+
+    .back-to-top.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .back-to-top:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    footer {
+      margin-top: var(--spacing-2xl);
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--gray-600);
+      padding-top: var(--spacing-lg);
+      border-top: 1px solid var(--gray-200);
+    }
+
+    /* 响应式 */
+    @media (max-width: 750px) {
+      .container {
+        padding: 1.2rem 1rem 2rem;
+      }
+
+      .intro-wrapper {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .intro-text h1 {
+        font-size: 1.8rem;
+      }
+
+      .intro-tagline {
+        border-left: none;
+        padding-left: 0;
+        text-align: center;
+      }
+
+      .intro-desc {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .social-links {
+        justify-content: center;
+      }
+
+      .section-title {
+        font-size: 1.6rem;
+      }
+
+      .card-grid {
+        gap: 1.2rem;
+      }
+
+      .back-to-top {
+        bottom: var(--spacing-lg);
+        right: var(--spacing-lg);
+        width: 44px;
+        height: 44px;
+      }
+    }
+
+    /* 装饰小点缀 */
+    .floating-dot {
+      transition: all 0.2s;
+    }
+
+    ::selection {
+      background: #cbdffc;
+      color: var(--gray-900);
+    }
+
+    /* 头像呼吸动画 */
+    @keyframes breathe {
+
+      0%,
+      100% {
+        box-shadow: 0 15px 25px -8px rgba(59, 130, 246, 0.3);
+      }
+
+      50% {
+        box-shadow: 0 15px 30px -5px rgba(59, 130, 246, 0.4);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <!-- 自我介绍区域（开头核心） -->
+    <div class="intro" id="intro">
+      <div class="intro-wrapper">
+        <div class="avatar-area">
+          <div class="avatar" role="img" aria-label="陈屿白的头像">
+            <span>✨</span>
+          </div>
+          <div class="badge">活在当下 · 保持好奇</div>
+        </div>
+        <div class="intro-text">
+          <h1>AndyZ · HongJia </h1>
+          <div class="intro-tagline">
+            全栈开发者 | 终身学习者 | 生活观察家
+          </div>
+          <div class="intro-desc">
+            你好呀 👋 我叫AndyZ，喜欢把想法变成代码，也喜欢把日子过成诗。目前深耕前端领域，热爱开源与设计，相信“代码和文字都是治愈的媒介”。
+            这里是我的线上小花园 —— 🌱 「学」是理性的轨道，⚡️ 「活」是感性的旷野。
+          </div>
+          <div class="social-links">
+            <a href="mailto:yubai@life.dev" aria-label="发送邮件给AndyZ">📧 443667818@qq.com</a>
+            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="访问AndyZ的Twitter">🐦 小蓝鸟</a>
+            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="访问AndyZ的GitHub">💻 GitHub</a>
+            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="查看AndyZ的摄影作品">📷 光影集</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 板块一：学习 -->
+    <div class="section" id="learning">
+      <div class="section-header">
+        <div class="section-title">
+          <span class="emoji-badge">📚</span> 学习 · 造舟为渡
+        </div>
+        <div class="section-motto">持续输入，构建系统认知</div>
+      </div>
+      <div class="card-grid">
+        <!-- 学习卡片 1 - 技术深耕 -->
+        <div class="card">
+          <div class="card-icon">⚙️</div>
+          <h3>技术深耕</h3>
+          <p>从前端架构到工程化落地，持续打磨现代Web开发技能栈，追求优雅且高性能的解决方案。</p>
+          <div class="skill-tags">
+            <span class="skill-tag">React / Vue</span>
+            <span class="skill-tag">TypeScript</span>
+            <span class="skill-tag">Next.js</span>
+            <span class="skill-tag">Tailwind</span>
+          </div>
+        </div>
+        <!-- 学习卡片 2 - 跨界探索 -->
+        <div class="card">
+          <div class="card-icon">🧠</div>
+          <h3>跨界探索</h3>
+          <p>偶尔跳出前端舒适区，玩转Node中间层、Python数据分析，以及AI辅助开发的新范式。</p>
+          <div class="skill-tags">
+            <span class="skill-tag">Node.js</span>
+            <span class="skill-tag">FastAPI</span>
+            <span class="skill-tag">LangChain</span>
+            <span class="skill-tag">Docker</span>
+          </div>
+        </div>
+        <!-- 学习卡片 3 - 阅读笔记 -->
+        <div class="card">
+          <div class="card-icon">📖</div>
+          <h3>阅读·重构</h3>
+          <p>近期在读 《JavaScript设计模式与开发实践》 与 《持续交付》，实践是最好的内化方式。</p>
+          <div class="skill-tags">
+            <span class="skill-tag">设计模式</span>
+            <span class="skill-tag">重构</span>
+            <span class="skill-tag">架构整洁</span>
+          </div>
+        </div>
+        <!-- 可选增加第四个卡片，展示学习目标 -->
+        <div class="card">
+          <div class="card-icon">🎯</div>
+          <h3>2026 里程碑</h3>
+          <p>完成「全栈小工具链」开源项目，输出6篇深度技术笔记，并尝试一次技术分享。</p>
+          <div class="skill-tags">
+            <span class="skill-tag">开源贡献</span>
+            <span class="skill-tag">技术写作</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 板块二：生活 -->
+    <div class="section" id="life">
+      <div class="section-header">
+        <div class="section-title">
+          <span class="emoji-badge">🌿</span> 生活 · 栖居于可能性
+        </div>
+        <div class="section-motto">温柔具体，才是日常的英雄主义</div>
+      </div>
+      <div class="card-grid">
+        <!-- 生活卡片 1 - 户外与旅行 -->
+        <div class="card life-card">
+          <div class="card-icon">🏔️</div>
+          <h3>山野与风</h3>
+          <p>每个季度安排一次短途徒步，喜欢在自然里放空充电。杭州的山脊线、海边的日出，都收藏在记忆里。</p>
+          <div class="life-quote">“群山回唱，脚印就是诗行”</div>
+        </div>
+        <!-- 生活卡片 2 - 摄影/日常 -->
+        <div class="card life-card">
+          <div class="card-icon">📸</div>
+          <h3>光影切片</h3>
+          <p>记录街头瞬间、日常光影。认为摄影是「暂停时间」的魔法，偏爱胶片色调和温暖构图。</p>
+          <div class="skill-tags">
+            <span class="skill-tag">街拍</span>
+            <span class="skill-tag">富士滤镜</span>
+            <span class="skill-tag">构图练习</span>
+          </div>
+        </div>
+        <!-- 生活卡片 3 - 咖啡与厨房 -->
+        <div class="card life-card">
+          <div class="card-icon">☕</div>
+          <h3>味觉实验室</h3>
+          <p>手冲日常｜周末brunch｜新菜翻车现场。相信烟火气和创造力同样重要。</p>
+          <div class="life-quote">“一人食也要认真摆盘”</div>
+        </div>
+        <!-- 生活卡片 4 - 音乐与书影 -->
+        <div class="card life-card">
+          <div class="card-icon">🎧</div>
+          <h3>精神补给站</h3>
+          <p>独立音乐/播客/老电影，最近循环《Boat Songs》，重看《机器人之梦》，细腻即疗愈。</p>
+          <div class="skill-tags">
+            <span class="skill-tag">City Pop</span>
+            <span class="skill-tag">是枝裕和</span>
+            <span class="skill-tag">理想国</span>
+          </div>
+        </div>
+      </div>
+      <!-- 生活小彩蛋：近期小确幸 -->
+      <div class="little-happiness">
+        <div style="display: flex; gap: 0.8rem; align-items: center; flex-wrap: wrap;">
+          <span style="font-size: 1.4rem;">✨</span>
+          <span style="font-weight: 500;">最近的小确幸：</span>
+          <span style="color: var(--gray-600);">学会了手冲冰咖啡 + 新买的绿植发了嫩芽 🌱</span>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>© 2026 AndyZ · 保持好奇，缓慢而坚定地生长</p>
+      <p style="margin-top: 0.5rem;">✍️ 学习板块 · 生活板块 — 此刻即礼物</p>
+    </footer>
+  </div>
+
+  <!-- 回到顶部按钮 -->
+  <button id="back-to-top" class="back-to-top" aria-label="回到顶部">↑</button>
+
+  <!-- 脚本 -->
+  <script>
+    (function () {
+      // 控制台欢迎语
+      console.log("%c✨ 欢迎来到AndyZ的小站 | 学习 & 生活交织的地方 ✨", "color: #3b82f6; font-size: 14px; font-weight: bold;");
+
+      // 自动更新版权年份
+      document.querySelector('footer p:first-child').innerHTML =
+        `© ${new Date().getFullYear()} AndyZ · 保持好奇，缓慢而坚定地生长`;
+
+      // 卡片点击反馈
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        card.addEventListener('click', (e) => {
+          if (e.target.closest('.card')) {
+            console.log(`🍃 你点开了「${card.querySelector('h3')?.innerText || '卡片'}」—— 美好正在发生`);
+          }
+        });
+      });
+
+      // 回到顶部功能
+      const backToTopBtn = document.getElementById('back-to-top');
+
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+          backToTopBtn.classList.add('show');
+        } else {
+          backToTopBtn.classList.remove('show');
+        }
+      });
+
+      backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+
+      // 卡片滚动淡入效果
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.card').forEach(card => {
+        observer.observe(card);
+      });
+    })();
+  </script>
+</body>
+
+</html>
